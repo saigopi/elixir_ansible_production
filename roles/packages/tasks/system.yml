@@ -30,6 +30,13 @@
     - build-essential
   become: yes
 
+- name: remove monit packages
+  apt:
+    name: monit
+    state: absent
+    update_cache: yes
+  become: yes
+
 - name: Install python packages
   pip:
     name: '{{ item }}'
