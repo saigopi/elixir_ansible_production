@@ -1,32 +1,92 @@
 ---
-- name: Add users
-  user:
-    name: '{{ item.name }}'
-    state: present
-  with_items: '{{ users }}'
-  become: yes
+ - name: REC_Creating Devloper User
+   user:
+     name: '{{ item.name }}'
+     comment: This User Craeted for Devloper
+     state: present
+   with_items: '{{ users }}'
+   become: yes
+   tags: create_users
 
-- name: Add SSH authorized keys
-  authorized_key:
-    user: '{{ item.0.name }}' # user: 'recruitxdevs'
-    key: '{{ item.1 }}' # key: {{ keys }}
-  with_subelements:
-    - '{{ users }}'
-    - keys
-  become: yes
+ - name: REC_Generate SSH_Key For User Devloper
+   user:
+     name: '{{ item.name }}'
+     generate_ssh_key: yes
+     state: present
+   with_items: '{{ users }}'
+   become: yes
+   tags: create_users
 
-- name: Disable non-sudoers
-  file:
-    path: /etc/sudoers.d/{{ item.name }}
-    state: absent
-  when: not item.sudoer
-  with_items: '{{ users }}'
-  become: yes
+ - name: Rec_authorized keys
+   authorized_key:
+     user: '{{ item.name }}'
+     key: '{{ item.key }}'
+     state: present
+   with_items: '{{ users }}'
+   become: yes
+   tags: create_users
 
-- name: Enable sudoers (passwordless)
-  copy:
-    content: '{{ item.name }} ALL=NOPASSWD:ALL'
-    dest: /etc/sudoers.d/{{ item.name }}
-  when: item.sudoer
-  with_items: '{{ users }}'
-  become: yes
+ - name: Rec_Disable non-sudoers
+   file:
+     path: /etc/sudoers.d/'{{ item.name }}'
+     state: absent
+   when: not item.sudoers
+   with_items: '{{ users }}'
+   become: yes
+   tags: create_users
+
+ - name: Rec_Add sudoer user
+   copy:
+     content: '{{ item.name }} ALL=NOPASSWD:ALL'
+     dest: /etc/sudoers.d/{{ item.name }}
+   when: item.sudoers
+   with_items: '{{ users }}'
+   become: yes
+   tags: create_users
+  #  lineinfile:
+  #    path: /etc/sudoers.d/'{{ item.name }}'
+  #    state: present
+  #    create: yes
+  #    line: '"{{ item.name }}" ALL=(ALL) NOPASSWD: ALL'
+
+
+  #  with_subelements:
+  #    - '{{ users }}'
+  #    - '{{ keys }}'
+
+
+
+
+
+# ---
+# - name: Add users
+#   user:
+#     name: '{{ item.name }}'
+#     state: present
+#   with_items: '{{ users }}'
+#   become: yes
+#
+# - name: Add SSH authorized keys
+#   authorized_key:
+#     user: '{{ item.0.name }}' # user: 'recruitxdevs'
+#     key: '{{ item.1 }}' # key: {{ keys }}
+#   with_subelements:
+#     - '{{ users }}'
+#     - keys
+#   become: yes
+#
+# - name: Disable non-sudoers
+#   file:
+#     path: /etc/sudoers.d/{{ item.name }}
+#     state: absent
+#   when: not item.sudoer
+#   with_items: '{{ users }}'
+#   become: yes
+#
+# - name: Enable sudoers (passwordless)
+#   copy:
+#     content: '{{ item.name }} ALL=NOPASSWD:ALL'
+#     dest: /etc/sudoers.d/{{ item.name }}
+#   when: item.sudoer
+#   with_items: '{{ users }}'
+#   become: yes

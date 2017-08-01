@@ -1,21 +1,33 @@
 ---
-users:
-  - name: recruitxdevs
-    sudoer: yes
-    keys:
-      - "{{ lookup('file', 'keys/arunvelsriram.pub') }}"
+  users:
+    - name:  devloper
+      key: "{{ lookup('file', 'keys/gopinatj.pub') }}"
+      sudoers: yes
 
-  - name: deployer
-    sudoer: yes
-    keys:
-      - "{{ lookup('file', 'keys/arunvelsriram.pub') }}"
+    - name:  devloper1
+      key: "{{ lookup('file', 'keys/gopinatj.pub') }}"
+      sudoers: yes
 
-  - name: Gopinath
-    sudoer: yes
-    keys:
-      - "{{ lookup('file', 'keys/gopinatj.pub') }}"
+    - name:  devloper2
+      key: "{{ lookup('file', 'keys/gopinatj.pub') }}"
+      sudoers: yes
 
-  - name: JaiGanesh
-    sudoer: yes
-    keys:
-      - "{{ lookup('file', 'keys/jaiganesh.pub') }}"
+    - name:  devloper3
+      key: "{{ lookup('file', 'keys/gopinatj.pub') }}"
+      sudoers: yes
+
+
+
+# ---
+# users:
+#   - name: recruitxdevs
+#     sudoer: yes
+#     keys:
+#       #- "{{ lookup('file', 'keys/arunvelsriram.pub') }}"
+#       - "{{ lookup('file', 'keys/gopinatj.pub') }}"
+#       #- "{{ lookup('file', 'keys/jaiganesh.pub') }}"
+
+  # - name: deployer
+  #   sudoer: yes
+  #   keys:
+  #     - "{{ lookup('file', 'keys/arunvelsriram.pub') }}"

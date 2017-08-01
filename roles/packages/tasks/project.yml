@@ -33,16 +33,19 @@
 
 - name: Install erlang {{ erlang_version }}
   apt:
-    #deb: https://packages.erlang-solutions.com/erlang/esl-erlang/FLAVOUR_1_general/esl-erlang_{{ erlang_version }}~ubuntu~trusty_amd64.deb
-    deb: http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_{{ erlang_version }}~ubuntu~trusty_amd64.deb #debian~jessie_amd64.deb
+    deb: "http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_{{ erlang_version }}~ubuntu~trusty_amd64.deb" #debian~jessie_amd64.deb
+    state: present
+    force: yes
   become: yes
+  tags: url
 
 - name: Install elixir elixir_version
   apt:
-    #deb: https://packages.erlang-solutions.com/erlang/elixir/FLAVOUR_2_download/elixir_{{ elixir_version }}~ubuntu~trusty_amd64.deb
-    deb: http://packages.erlang-solutions.com/site/ec/elixir/FLAVOUR_2_download/elixir_{{ elixir_version }}~ubuntu~trusty_amd64.deb
+    deb: "http://packages.erlang-solutions.com/site/ec/elixir/FLAVOUR_2_download/elixir_{{ elixir_version }}~ubuntu~trusty_amd64.deb"
+    state: present
+    force: yes
   become: yes
-  tags: try
+  tags: url
 
 - name: Install prerequisites for database
   become: yes
