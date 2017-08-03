@@ -8,14 +8,14 @@
    become: yes
    tags: create_users
 
- - name: REC_Generate SSH_Key For User Devloper
-   user:
-     name: '{{ item.name }}'
-     generate_ssh_key: yes
-     state: present
-   with_items: '{{ users }}'
-   become: yes
-   tags: create_users
+ # - name: REC_Generate SSH_Key For User Devloper
+ #   user:
+ #     name: '{{ item.name }}'
+ #     generate_ssh_key: yes
+ #     state: present
+ #   with_items: '{{ users }}'
+ #   become: yes
+ #   tags: create_users
 
  - name: Rec_authorized keys
    authorized_key:

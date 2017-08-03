@@ -55,8 +55,54 @@
     - python-psycopg2
   tags: try
 
+- name: clone TWChennai/RecruitX-Backend
+  git:
+    repo: https://github.com/TWChennai/RecruitX-Backend.git
+    dest: $HOME/RecruitX-Backend
+    clone: yes
+    update: yes
+    #version: "{{ custom-deployment }}"
+  tags: repo
+
+
 - name: Create database
   postgresql_db: name="{{ database_name }}" encoding="UTF-8"
   become: yes
   become_user: postgres
   tags: try
+
+- name: Rec_Install local hex
+  command: " bash -ilc 'mix local.hex --force' "
+  args:
+    chdir: ~/RecruitX-Backend
+    executable: /bin/bash
+  tags: bash
+
+- name: Rec_Install mix deps
+  command: "bash -ilc 'mix deps.get --force'"
+  args:
+    chdir: ~/RecruitX-Backend
+    executable: /bin/bash
+
+- name: Rec_Install local_rebar
+  command: "bash -ilc 'mix local.rebar --force'"
+  args:
+    chdir: ~/RecruitX-Backend
+    executable: /bin/bash
+
+- name: Rec_create vagarant role
+  command: psql -U postgres -c "CREATE ROLE \"vagrant\" LOGIN CREATEDB;"
+  become: yes
+  become_user: postgres
+
+- name: Rec_mix ecto.create db
+  command: "bash -ilc 'mix ecto.create'"
+  args:
+    chdir: ~/RecruitX-Backend
+    executable: /bin/bash
+
+- name: Rec_Start phoenix server
+  command: "bash -ilc 'mix phoenix.server'"
+  args:
+    chdir: ~/RecruitX-Backend
+    executable: /bin/bash
